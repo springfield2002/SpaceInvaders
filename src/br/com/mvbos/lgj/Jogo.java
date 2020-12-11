@@ -6,7 +6,9 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.io.*;
 import java.util.Random;
+import java.util.Scanner;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -34,7 +36,7 @@ public class Jogo extends JFrame {
 
 	private boolean[] controleTecla = new boolean[5];
 
-	public Jogo() {
+	public Jogo() throws FileNotFoundException {
 		this.addKeyListener(new KeyListener() {
 
 			@Override
@@ -118,6 +120,7 @@ public class Jogo extends JFrame {
 	private Invader[][] invasores = new Invader[11][5];
 
 	private Invader.Tipos[] tipoPorLinha = { Tipos.PEQUENO, Tipos.MEDIO, Tipos.MEDIO, Tipos.GRANDE, Tipos.GRANDE };
+	private Ranking pontuacao = new Ranking();
 
 	//
 	private int linhaBase = 60;
@@ -197,7 +200,7 @@ public class Jogo extends JFrame {
 
 	}
 
-	public void iniciarJogo() {
+	public void iniciarJogo() throws FileNotFoundException {
 		long prxAtualizacao = 0;
 
 		while (true) {
@@ -456,7 +459,23 @@ public class Jogo extends JFrame {
 					g2d.setColor(Color.WHITE);
 				}
 				if(vidas == 0) {
+
+					if(pontos != 0) {
+
+						texto.desenha(g2d, "Digite o seu nome no sistema", tela.getWidth()/3,  tela.getHeight()/3);
+						try {
+							File dados = new File("C:\\Users\\tiago\\OneDrive\\Documentos\\GitHub\\SpaceInvaders\\SpaceInvaders\\data.txt");
+							pontuacao.armazena(dados, pontos);
+
+		
+						} catch (Exception e) {
+							System.out.println("erro ao manipular o arquivo");
+						}
+
+
+					}
 					System.exit(0);
+
 				}
 				texto.desenha(g2d, String.valueOf(pontos), 10, 20);
 				texto.desenha(g2d, "Level " + level, tela.getWidth() - 100, 20);
@@ -487,10 +506,11 @@ public class Jogo extends JFrame {
 		tiro.setPy(inimigo.getPy() + inimigo.getAltura());
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException {
 		Jogo jogo = new Jogo();
 		jogo.carregarJogo();
 		jogo.iniciarJogo();
+
 	}
 
 }

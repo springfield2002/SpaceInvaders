@@ -1,0 +1,7 @@
+junio: 1400
+adolf: 1000
+amilton: 500
+JORGE: 500
+gilson: 500
+genas: 1300
+tasiaa: 500
